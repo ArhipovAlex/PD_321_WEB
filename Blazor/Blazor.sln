@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntroductionToBlazor", "IntroductionToBlazor\IntroductionToBlazor.csproj", "{8B34E37D-1820-466A-AE1F-8EC374FF5E7F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBinding", "DataBinding\DataBinding.csproj", "{960E80C4-00ED-4568-A88B-D4D85D6585FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{8B34E37D-1820-466A-AE1F-8EC374FF5E7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B34E37D-1820-466A-AE1F-8EC374FF5E7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B34E37D-1820-466A-AE1F-8EC374FF5E7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{960E80C4-00ED-4568-A88B-D4D85D6585FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{960E80C4-00ED-4568-A88B-D4D85D6585FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{960E80C4-00ED-4568-A88B-D4D85D6585FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{960E80C4-00ED-4568-A88B-D4D85D6585FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
