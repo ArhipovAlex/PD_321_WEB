@@ -12,7 +12,7 @@
 			{
 				@if(!i.IsDone)
 				{
-					<li><input type="checkbox" @bind="i.IsDone" /> @i.Title.</li>
+					<li><input type="checkbox" @bind="i.IsDone" @onclick="()=>i.ComplitedTime = DateTime.Now"/> @i.Title. (@i.AssignedTime)</li>
 				}
 			}
 		</ol>
@@ -24,7 +24,7 @@
 			{
 				@if (i.IsDone)
 				{
-					<li><input type="checkbox" @bind="i.IsDone" /> @i.Title.</li>
+					<li><input type="checkbox" @bind="i.IsDone" /> @i.Title. (@i.AssignedTime | @i.ComplitedTime)</li>
 				}
 			}
 		</ol>
@@ -39,12 +39,15 @@
 	{
 		public string Title { get; set; }
 		public bool IsDone{ get; set; }
+		public DateTime AssignedTime{ get; set; }
+		public DateTime? ComplitedTime{ get; set; }
+		
 	}
 	public void AddItem(MouseEventArgs e)
 	{
 		if(!string.IsNullOrWhiteSpace(TODOnewItem))
 		{
-			todos.Add(new TODOitem { Title = TODOnewItem });
+			todos.Add(new TODOitem { Title = TODOnewItem, AssignedTime = DateTime.Now });
 			TODOnewItem = "";
 		}
 	}
