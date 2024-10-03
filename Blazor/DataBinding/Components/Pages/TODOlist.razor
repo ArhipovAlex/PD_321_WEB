@@ -1,15 +1,35 @@
 ﻿@page "/TODOlist"
 @rendermode InteractiveServer
 
-<h3>TODOlist (@todos.Count(testc=>!testc.IsDone))</h3>
-<input @bind="TODOnewItem"/>
-<button @onclick='AddItem'>Add Item</button>
-<ol>
-	@foreach(TODOitem i in todos)
-	{
-		<li>@i.Title. <input type="checkbox" @bind="i.IsDone"/> Выполнено</li>
-	}
-</ol>
+
+<div id="todo_list_full_page" style="display:flex; justify-content:space-between">
+	<div id="todo_list" style="flex:1;">
+		<h3>TODOlist (@todos.Count(testc => !testc.IsDone))</h3>
+		<input @bind="TODOnewItem" />
+		<button @onclick='AddItem'>Add Item</button>
+		<ol>
+			@foreach(TODOitem i in todos)
+			{
+				@if(!i.IsDone)
+				{
+					<li><input type="checkbox" @bind="i.IsDone" /> @i.Title.</li>
+				}
+			}
+		</ol>
+	</div>
+	<div id="done_list" style="flex:1;">
+		<h3>DONE list (@todos.Count(testc => testc.IsDone))</h3>
+		<ol>
+			@foreach(TODOitem i in todos)
+			{
+				@if (i.IsDone)
+				{
+					<li><input type="checkbox" @bind="i.IsDone" /> @i.Title.</li>
+				}
+			}
+		</ol>
+	</div>
+</div>
 @code {
 
 	List<TODOitem> todos = new List<TODOitem>();
