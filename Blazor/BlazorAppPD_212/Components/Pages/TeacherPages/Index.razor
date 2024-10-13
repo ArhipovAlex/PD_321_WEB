@@ -14,13 +14,15 @@
 <p>
     <a href="teachers/create">Create New</a>
 </p>
-
+<div>
+    <input type="button" value="Очистить"/>
+</div>
 <QuickGrid Class="table" Items="FilteredTeachers">
-    <PropertyColumn Property="teacher => teacher.work_since" Title="Дата начала работы" Sortable="true"/>
+    <PropertyColumn Property="teacher => (DateTime.Today.Subtract(teacher.work_since)).Days/365" Title="Трудовой стаж лет" Sortable="true"/>
     <PropertyColumn Property="teacher => teacher.last_name" Title="Фамилия" Sortable="true">
         <ColumnOptions>
             <div>
-                <input type="search" @bind="lastNameFilter" @bind:event="oninput"/>
+                <input type="search" id="lastNamesearch" @bind="lastNameFilter" @bind:event="oninput"/>
             </div>
         </ColumnOptions>
     </PropertyColumn>
@@ -38,12 +40,12 @@
             </div>
         </ColumnOptions>
     </PropertyColumn>
-    <PropertyColumn Property="teacher => teacher.birth_date" Title="Дата рождения" Sortable="true" />
+    <PropertyColumn Property="teacher => (DateTime.Today.Subtract(teacher.birth_date)).Days/365" Title="Возраст лет" Sortable="true" />
 
     <TemplateColumn Context="teacher">
-        <a href="@($"teachers/edit?teacher_id={teacher.teacher_id}")">Edit</a> |
-        <a href="@($"teachers/details?teacher_id={teacher.teacher_id}")">Details</a> |
-        <a href="@($"teachers/delete?teacher_id={teacher.teacher_id}")">Delete</a>
+        @* <a href="@($"teachers/edit?teacher_id={teacher.teacher_id}")">Edit</a> | *@
+        <a href="@($"teachers/details?teacher_id={teacher.teacher_id}")">Details</a>
+        @* <a href="@($"teachers/delete?teacher_id={teacher.teacher_id}")">Delete</a> *@
     </TemplateColumn>
 </QuickGrid>
 
@@ -58,6 +60,12 @@
     {
         context = DbFactory.CreateDbContext();
     }
-
+    public void CleanFilters()
+    {
+        lastNameFilter = "";
+        firstNameFilter = "";
+        middleNameFilter = "";
+        
+    }
     public async ValueTask DisposeAsync() => await context.DisposeAsync();
 }
