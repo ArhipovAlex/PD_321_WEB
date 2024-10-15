@@ -12,5 +12,6 @@ namespace BlazorAppPD_212.Models
         public string middle_name { get; set; }
         public DateTime birth_date { get; set; }
 
+        public int age() => DateTime.Today.Subtract(birth_date).Days / 365;
     }
 }

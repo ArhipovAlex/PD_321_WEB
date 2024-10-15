@@ -11,14 +11,18 @@
 
 <h1>Преподаватели</h1>
 
-<p>
-    <a href="teachers/create">Create New</a>
-</p>
-<div>
-    <input type="button" value="Очистить"/>
+<div style="display:flex; justify-content:space-between;">
+    <div>
+        <a href="teachers/create">Create New</a>
+    </div>
+    <div>
+        <input type="button" class="btn btn-primary" value="Очистить" @onclick="CleanFilters" />
+    </div>
 </div>
-<QuickGrid Class="table" Items="FilteredTeachers">
-    <PropertyColumn Property="teacher => (DateTime.Today.Subtract(teacher.work_since)).Days/365" Title="Трудовой стаж лет" Sortable="true"/>
+<QuickGrid Class="table" Items="FilteredTeachers" Pagination="state">
+@*     <PropertyColumn Property="teacher => (DateTime.Today.Subtract(teacher.work_since)).Days/365" Title="Трудовой стаж лет" Sortable="true" />
+ *@    
+    
     <PropertyColumn Property="teacher => teacher.last_name" Title="Фамилия" Sortable="true">
         <ColumnOptions>
             <div>
@@ -40,7 +44,8 @@
             </div>
         </ColumnOptions>
     </PropertyColumn>
-    <PropertyColumn Property="teacher => (DateTime.Today.Subtract(teacher.birth_date)).Days/365" Title="Возраст лет" Sortable="true" />
+    <PropertyColumn Property="teacher => teacher.work_since" Title="Трудовой стаж лет" Sortable="true" />
+    <PropertyColumn Property="teacher => teacher.birth_date" Title="Возраст лет" Sortable="true" />
 
     <TemplateColumn Context="teacher">
         @* <a href="@($"teachers/edit?teacher_id={teacher.teacher_id}")">Edit</a> | *@
@@ -49,7 +54,18 @@
     </TemplateColumn>
 </QuickGrid>
 
+<div>
+        <select @bind="state.ItemsPerPage" @bind:event="onchange">
+            <option>3</option>
+            <option>5</option>
+            <option>10</option>
+            <option>15</option>
+        </select>
+</div>
+<Paginator State="state" />
+
 @code {
+    PaginationState state = new PaginationState { ItemsPerPage = 5 };
     string lastNameFilter = "";
     string firstNameFilter = "";
     string middleNameFilter = "";
@@ -65,7 +81,6 @@
         lastNameFilter = "";
         firstNameFilter = "";
         middleNameFilter = "";
-        
     }
     public async ValueTask DisposeAsync() => await context.DisposeAsync();
 }
