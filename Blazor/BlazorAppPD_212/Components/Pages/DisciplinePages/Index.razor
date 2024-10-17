@@ -61,6 +61,10 @@
     && ((d.discipline_id == idFilter) || idFilter == 0)
     && ((d.number_of_lessons == numberOfLessonsFilter) || numberOfLessonsFilter == 0)
     );
+    IQueryable<Discipline> DisciplinesForTeacher => context.Disciplines.Where
+    (
+        d => d.discipline_id==context.DTRelations.Where(dtr => dtr.teacher)
+    );
     public async ValueTask DisposeAsync() => await context.DisposeAsync();
     public void CleanFilters()
     {
