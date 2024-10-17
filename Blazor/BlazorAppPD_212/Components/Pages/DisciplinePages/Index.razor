@@ -10,15 +10,36 @@
 <PageTitle>Index</PageTitle>
 
 <h1>Дисциплины</h1>
-
-<p>
-    <a href="disciplines/create">Create New</a>
-</p>
-
-<QuickGrid Class="table" Items="context.Disciplines">
-    <PropertyColumn Property="discipline => discipline.discipline_id" Sortable="true" Title="ID"/>
-    <PropertyColumn Property="discipline => discipline.discipline_name" Sortable="true" Title="Название дисциплины"/>
-    <PropertyColumn Property="discipline => discipline.number_of_lessons" Sortable="true" Title="Количество уроков"/>
+<div style="display:flex; justify-content:space-between;">
+    <div>
+        <a href="disciplines/create">Create New</a>
+    </div>
+    <div>
+        <input type="button" class="btn btn-primary" value="Очистить" @onclick="CleanFilters" />
+    </div>
+</div>
+<QuickGrid Class="table" Items="FilteredDisciplines">
+    <PropertyColumn Property="discipline => discipline.discipline_id" Sortable="true" Title="ID">
+        <ColumnOptions>
+            <div>
+                <input type="search" @bind="idFilter" @bind:event="onchange" />
+            </div>
+        </ColumnOptions>
+    </PropertyColumn>
+    <PropertyColumn Property="discipline => discipline.discipline_name" Sortable="true" Title="Название дисциплины">
+        <ColumnOptions>
+            <div>
+                <input type="search" @bind="disciplineNameFilter" @bind:event="oninput" />
+            </div>
+        </ColumnOptions>
+    </PropertyColumn>
+    <PropertyColumn Property="discipline => discipline.number_of_lessons" Sortable="true" Title="Количество уроков">
+        <ColumnOptions>
+            <div>
+                <input type="search" @bind="numberOfLessonsFilter" @bind:event="onchange" />
+            </div>
+        </ColumnOptions>
+    </PropertyColumn>
 
     <TemplateColumn Context="discipline">
         <a href="@($"disciplines/edit?discipline_id={discipline.discipline_id}")">Edit</a> |
@@ -29,11 +50,22 @@
 
 @code {
     private BlazorAppPD_212Context context = default!;
-
+    int idFilter=0;
+    string disciplineNameFilter = "";
+    int numberOfLessonsFilter=0;
     protected override void OnInitialized()
     {
         context = DbFactory.CreateDbContext();
     }
-
+    IQueryable<Discipline> FilteredDisciplines => context.Disciplines.Where(d => (d.discipline_name.Contains(disciplineNameFilter))
+    && ((d.discipline_id == idFilter) || idFilter == 0)
+    && ((d.number_of_lessons == numberOfLessonsFilter) || numberOfLessonsFilter == 0)
+    );
     public async ValueTask DisposeAsync() => await context.DisposeAsync();
+    public void CleanFilters()
+    {
+        idFilter = 0;
+        disciplineNameFilter = "";
+        numberOfLessonsFilter = 0;
+    }
 }
