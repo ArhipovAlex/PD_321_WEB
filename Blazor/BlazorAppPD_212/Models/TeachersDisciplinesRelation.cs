@@ -8,3 +8,4 @@ namespace BlazorAppPD_212.Models
         [Key]public short discipline { get; set; }
     }
 }
+//https://stackoverflow.com/questions/74342264/the-entity-type-has-multiple-properties-with-the-key-attribute-composite-prim
