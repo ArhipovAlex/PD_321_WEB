@@ -13,10 +13,16 @@ namespace MvcMovie.Controllers
         //{
         //    return "This is My Default action";
         //}
-        public string Welcome(string name, int numTimes=1)
+        //public string Welcome(string name, int numTimes=1)
+        //{
+        //    return HtmlEncoder.Default.Encode($"Hello {name}, NumTimes is:{numTimes}");
+        //    //return "This is the Welcome action method";
+        //}
+        public IActionResult Welcome(string name, int numTimes)
         {
-            return HtmlEncoder.Default.Encode($"Hello {name}, NumTimes is:{numTimes}");
-            //return "This is the Welcome action method";
+            ViewData["Message"] = $"Hello {name}";
+            ViewData["numTimes"] = numTimes;
+            return View();
         }
     }
 }
