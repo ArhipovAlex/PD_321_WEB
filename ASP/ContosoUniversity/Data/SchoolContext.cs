@@ -20,7 +20,7 @@ namespace ContosoUniversity.Data
 
         public DbSet<Department> Departments { get; set; }
         public DbSet<Instructor> Instructors { get; set; }
-        public DbSet<OfficeAssigment> OfficeAssigments { get; set; }
+        public DbSet<OfficeAssignment> OfficeAssigments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //FluentAPI:

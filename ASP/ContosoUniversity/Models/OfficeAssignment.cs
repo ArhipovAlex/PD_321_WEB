@@ -2,7 +2,7 @@
 
 namespace ContosoUniversity.Models;
 
-public class OfficeAssigment
+public class OfficeAssignment
 {
     [Key]
     public int InstructorID { get; set; }

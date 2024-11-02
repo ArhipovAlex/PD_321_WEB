@@ -30,5 +30,5 @@ public class Instructor
     }
     //Navigation property:
     public ICollection<Course> Courses { get; set; }
-    public OfficeAssigment OfficeAssigment { get; set; }
+    public OfficeAssignment OfficeAssigment { get; set; }
 }
