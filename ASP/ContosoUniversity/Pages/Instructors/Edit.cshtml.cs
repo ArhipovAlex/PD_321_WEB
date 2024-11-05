@@ -11,7 +11,7 @@ using ContosoUniversity.Models;
 
 namespace ContosoUniversity.Pages.Instructors
 {
-    public class EditModel : PageModel
+    public class EditModel : InstructorCoursesPageModel
     {
         private readonly ContosoUniversity.Data.SchoolContext _context;
 
@@ -25,23 +25,22 @@ namespace ContosoUniversity.Pages.Instructors
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var instructor =  await _context.Instructors.FirstOrDefaultAsync(m => m.ID == id);
-            if (instructor == null)
-            {
-                return NotFound();
-            }
+            Instructor instructor =  await _context.Instructors
+                .Include(i=>i.OfficeAssigment)
+                .Include(i=>i.Courses)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (instructor == null) return NotFound();
             Instructor = instructor;
+            PopulateAssignedCourseData(_context, Instructor);
             return Page();
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more information, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        /*public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
@@ -67,6 +66,67 @@ namespace ContosoUniversity.Pages.Instructors
             }
 
             return RedirectToPage("./Index");
+        }*/
+
+        public async Task<IActionResult> OnPostAsync(int? id, string[] selecteCourses)
+        {
+            if (id == null) return NotFound();
+            Instructor instructorToUpdate = await _context.Instructors
+                .Include(i=>i.OfficeAssigment)
+                .Include(i=>i.Courses)
+                .FirstOrDefaultAsync(m=>m.ID==id);
+            if (instructorToUpdate == null) return NotFound();
+            if
+            (
+                await TryUpdateModelAsync<Instructor>
+                (
+                    instructorToUpdate,
+                    "Instructor",
+                    i=>i.FirstMidName,
+                    i=>i.LastName,
+                    i=>i.HireDate,
+                    i=>i.OfficeAssigment
+                )
+            )
+            {
+                if(String.IsNullOrWhiteSpace(instructorToUpdate.OfficeAssigment?.Location))
+                    instructorToUpdate.OfficeAssigment = null;
+                UpdateInstructorCourses(selecteCourses, instructorToUpdate);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
+            }
+            UpdateInstructorCourses(selecteCourses,instructorToUpdate);
+            PopulateAssignedCourseData(_context, instructorToUpdate);
+            return Page();
+        }
+
+        public void UpdateInstructorCourses(string[] selecteCourses, Instructor instructorToUpdate) 
+        {
+            if(selecteCourses == null)
+            {
+                instructorToUpdate.Courses=new List<Course>();
+                return;
+            }
+            HashSet<string> selectedCoursesHS= new HashSet<string>(selecteCourses);
+            HashSet<int> instructorCoursesHS = new HashSet<int>(instructorToUpdate.Courses.Select(c => c.CourseId));
+
+            foreach (Course course in _context.Courses)
+            {
+                if (selectedCoursesHS.Contains(course.CourseId.ToString()) &&
+                    !instructorCoursesHS.Contains(course.CourseId))
+                {
+                    instructorToUpdate.Courses.Add(course);
+                }
+                else
+                {
+                    if(instructorCoursesHS.Contains(course.CourseId))
+                    {
+                        instructorToUpdate.Courses.Remove(
+                            instructorToUpdate.Courses.Single(c => c.CourseId == course.CourseId)
+                            );
+                    }
+                }
+            }
         }
 
         private bool InstructorExists(int id)
