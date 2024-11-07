@@ -10,7 +10,7 @@
 <h4>Instructor</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-7">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Instructor.ID" />
@@ -37,17 +37,17 @@
 
             <div class="form-group">
                 <div class="table">
-                    <table>
+                    <table class="col-md-12">
                         <tr>
                             @{
                                 int cnt = 0;
                                 foreach(Models.SchoolViewModels.AssignedCourseData course in Model.AssignedCourseDataList)
                                 {
-                                    if(cnt++%3 == 0)
+                                    if(cnt++ %3 == 0)
                                     {
                                         @:</tr><tr>
                                     }
-                                    @:<td style="width:50%">
+                                    @:<td class="col-md-4">
                                     <input  type="checkbox" 
                                             name="selectedCourses" 
                                             value="@course.CourseID"
