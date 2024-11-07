@@ -10,7 +10,7 @@ using ContosoUniversity.Models;
 
 namespace ContosoUniversity.Pages.Instructors
 {
-    public class DeleteModel : PageModel
+    public class DeleteModel : InstructorCoursesPageModel
     {
         private readonly ContosoUniversity.Data.SchoolContext _context;
 
@@ -24,12 +24,11 @@ namespace ContosoUniversity.Pages.Instructors
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var instructor = await _context.Instructors.FirstOrDefaultAsync(m => m.ID == id);
+            if (id == null)return NotFound();
+            Instructor instructor = await _context.Instructors
+                .Include(i => i.OfficeAssigment)
+                .Include(i => i.Courses)
+                .FirstOrDefaultAsync(m => m.ID == id);
 
             if (instructor == null)
             {
@@ -39,10 +38,11 @@ namespace ContosoUniversity.Pages.Instructors
             {
                 Instructor = instructor;
             }
+            PopulateAssignedCourseData(_context, Instructor);
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        /*public async Task<IActionResult> OnPostAsync(int? id)
         {
             if (id == null)
             {
@@ -56,6 +56,21 @@ namespace ContosoUniversity.Pages.Instructors
                 _context.Instructors.Remove(Instructor);
                 await _context.SaveChangesAsync();
             }
+
+            return RedirectToPage("./Index");
+        }*/
+        public async Task<IActionResult> OnPostAsync(int? id)
+        {
+            if (id == null) { return NotFound(); }
+            Instructor instructor = await _context.Instructors
+                .Include(i => i.Courses)
+                .SingleAsync(i => i.ID == id);
+            if (instructor == null) { return RedirectToPage("./Index"); }
+            List<Department> departments = await _context.Departments.Where(d => d.InstructorID == id).ToListAsync();
+            departments.ForEach(d => d.InstructorID = null);
+
+            _context.Instructors.Remove(instructor);
+            await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }
