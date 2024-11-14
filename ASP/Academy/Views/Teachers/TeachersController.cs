@@ -34,6 +34,8 @@ namespace Academy.Views.Teachers
             }
 
             var teacher = await _context.Teachers
+                .Include(t => t.Disciplines!)
+                .ThenInclude(d => d.Discipline)
                 .FirstOrDefaultAsync(m => m.teacher_id == id);
             if (teacher == null)
             {

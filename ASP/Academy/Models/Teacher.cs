@@ -14,4 +14,7 @@ public class Teacher
     public required DateOnly birth_date { get; set; }
     public required DateOnly work_since { get; set; }
 
+    //Navigation properties:
+    public ICollection<TeachersDisciplinesRelations>? Disciplines { get; set; }
+    
 }
