@@ -11,4 +11,5 @@ public class Direction
 
     public ICollection<Group>? Groups { get; set; }
 
+    public ICollection<DirectionsDisciplinesRelations>? Disciplines { get; set; }
 }
