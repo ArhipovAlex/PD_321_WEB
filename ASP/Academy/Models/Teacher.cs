@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace Academy.Models;
 
@@ -16,5 +17,8 @@ public class Teacher
 
     //Navigation properties:
     public ICollection<TeachersDisciplinesRelations>? Disciplines { get; set; }
-    
+    //public IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectList>? DisciplinesToEnum 
+    //{
+    //    get => new SelectList(Microsoft.AspNetCore.Mvc.Rendering.SelectList(Disciplines)); 
+    //} 
 }

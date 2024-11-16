@@ -18,6 +18,7 @@ namespace Academy.Views.Teachers
         {
             _context = context;
         }
+        public Teacher Teacher { get; set; } = default!;
 
         // GET: Teachers
         public async Task<IActionResult> Index()
@@ -75,7 +76,14 @@ namespace Academy.Views.Teachers
                 return NotFound();
             }
 
-            var teacher = await _context.Teachers.FindAsync(id);
+            //var teacher = await _context.Teachers.FindAsync(id);
+            var teacher = await _context.Teachers
+                .Include (t => t.Disciplines!)
+                .ThenInclude(d => d.Discipline)
+                .FirstOrDefaultAsync(m => m.teacher_id == id);
+
+            var disciplines = await _context.Disciplines.ToListAsync();
+            ViewData["Disciplines"] = new SelectList(disciplines, "discipline_id", "discipline_name");
             if (teacher == null)
             {
                 return NotFound();
@@ -100,6 +108,7 @@ namespace Academy.Views.Teachers
                 try
                 {
                     _context.Update(teacher);
+                    //_context.Update(teacher.Disciplines!);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -113,7 +122,8 @@ namespace Academy.Views.Teachers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit));
             }
             return View(teacher);
         }
