@@ -15,6 +15,7 @@ public class TeachersDisciplinesRelations
     public short discipline { get; set; }
 
     //Navigation properties:
-    public required Teacher Teacher { get; set; }
-    public required Discipline Discipline { get; set; }
+    public Teacher Teacher { get; set; }
+    public Discipline Discipline { get; set; }
+
 }

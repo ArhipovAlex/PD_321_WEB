@@ -127,6 +127,20 @@ namespace Academy.Views.Teachers
             }
             return View(teacher);
         }
+        public void AddDiscipline(int? teacher, int? discipline)
+        {
+            int? teacher_id = teacher;
+            int? discipline_id = discipline;
+            //if(discipline == null)
+            //{
+            //    //teacher.Disciplines = new List<TeachersDisciplinesRelations>();
+            //    return;
+            //}
+            //teacher.Disciplines.Add
+            //    (
+            //    new TeachersDisciplinesRelations { teacher = teacher.teacher_id, discipline = discipline.discipline_id }
+            //    );
+        }
 
         // GET: Teachers/Delete/5
         public async Task<IActionResult> Delete(int? id)
