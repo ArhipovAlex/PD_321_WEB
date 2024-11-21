@@ -79,8 +79,8 @@
     <form asp-action="AddDiscipline">
         <label name="teacher" asp-for="teacher_id" class="control-label">Добавить дисциплину</label>
         <div style="display:flex;justify-content:left">
-            <input type="hidden" name="teacher" asp-for="teacher_id"/>
-            <select name="discipline" class="form-control" asp-items="ViewBag.Disciplines" style="width:80%">
+            <input type="hidden" name="teacher_id" asp-for="teacher_id"/>
+            <select name="discipline_id" class="form-control" asp-items="ViewBag.Disciplines" style="width:80%">
                 <option value="">--Добавить дисциплину--</option>
             </select>
             <span asp-validation-for="teacher_id"></span>

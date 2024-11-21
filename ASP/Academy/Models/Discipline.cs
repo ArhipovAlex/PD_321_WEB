@@ -12,5 +12,5 @@ public class Discipline
     public byte number_of_lessons { get; set; }
 
     //Navigation Property
-
+    public ICollection<TeachersDisciplinesRelations>? Teachers { get; set; } 
 }

@@ -78,7 +78,7 @@ namespace Academy.Views.Teachers
 
             //var teacher = await _context.Teachers.FindAsync(id);
             var teacher = await _context.Teachers
-                .Include (t => t.Disciplines!)
+                .Include(t => t.Disciplines!)
                 .ThenInclude(d => d.Discipline)
                 .FirstOrDefaultAsync(m => m.teacher_id == id);
 
@@ -127,10 +127,50 @@ namespace Academy.Views.Teachers
             }
             return View(teacher);
         }
-        public void AddDiscipline(int? teacher, int? discipline)
+        public async Task<IActionResult> AddDiscipline(int? teacher_id, short? discipline_id)
         {
-            int? teacher_id = teacher;
-            int? discipline_id = discipline;
+            //int? teacher_id = teacher;
+            //int? discipline_id = discipline;
+
+            Teacher teacher = await _context.Teachers
+                .Include(t => t.Disciplines)
+                .ThenInclude(d => d.Discipline)
+                .FirstOrDefaultAsync(m => m.teacher_id == teacher_id);
+            List<Discipline> disciplines = _context.Disciplines.ToList();
+            if (teacher == null) return Redirect("./Index");
+            /////////////
+            //DbSet<TeachersDisciplinesRelations> relations = _context.TeachersDisciplinesRelation;
+            //HashSet<short> teachersDisciplines = new HashSet<short>(teacher.Disciplines.Select(d=>d.discipline));
+
+            /////////////
+            TeachersDisciplinesRelations disciplineToAdd = new TeachersDisciplinesRelations();
+            disciplineToAdd.discipline=(short) discipline_id;
+            disciplineToAdd.teacher=(int)teacher_id;
+            disciplineToAdd.Discipline = await _context.Disciplines
+                .FirstOrDefaultAsync(d => d.discipline_id == discipline_id);
+            disciplineToAdd.Teacher = teacher;
+
+            if (teacher.Disciplines!.Contains(disciplineToAdd))
+            {            
+                teacher.Disciplines.Add(disciplineToAdd); 
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        _context.Update(teacher);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!TeacherExists(teacher.teacher_id)) return NotFound();
+                        else throw;
+                    }
+                }
+            }
+
+            return View(teacher);
+            //return RedirectToPage("./Details", teacher.teacher_id);
+
             //if(discipline == null)
             //{
             //    //teacher.Disciplines = new List<TeachersDisciplinesRelations>();
