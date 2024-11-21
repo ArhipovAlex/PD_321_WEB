@@ -150,9 +150,25 @@ namespace Academy.Views.Teachers
                 .FirstOrDefaultAsync(d => d.discipline_id == discipline_id);
             disciplineToAdd.Teacher = teacher;
 
-            if (teacher.Disciplines!.Contains(disciplineToAdd))
-            {            
-                teacher.Disciplines.Add(disciplineToAdd); 
+            //bool exist = false;
+            //foreach(TeachersDisciplinesRelations i in teacher.Disciplines)
+            //{
+            //    if (i == disciplineToAdd)
+            //    {
+            //        exist = true;
+            //        break;
+            //    }
+            //}
+            //if (!exist)
+            //{            
+            //    teacher.Disciplines.Add(disciplineToAdd); 
+
+            //}
+            if(teacher.Disciplines.Any(td=>td.discipline==disciplineToAdd.discipline))
+            {
+                //ModelState.AddModelError("", "Такая дисциплина уже есть");
+                return RedirectToAction(nameof(Edit), new {id=teacher_id});
+            }
                 if (ModelState.IsValid)
                 {
                     try
@@ -166,8 +182,6 @@ namespace Academy.Views.Teachers
                         else throw;
                     }
                 }
-            }
-
             return View(teacher);
             //return RedirectToPage("./Details", teacher.teacher_id);
 
