@@ -8,87 +8,87 @@ using Microsoft.EntityFrameworkCore;
 using Academy.Data;
 using Academy.Models;
 
-namespace Academy.Views.Disciplines
+namespace Academy.Controllers
 {
-    public class DisciplinesController : Controller
+    public class DirectionsController : Controller
     {
         private readonly AcademyContext _context;
 
-        public DisciplinesController(AcademyContext context)
+        public DirectionsController(AcademyContext context)
         {
             _context = context;
         }
 
-        // GET: Disciplines
+        // GET: Directions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Disciplines.ToListAsync());
+            return View(await _context.Directions.ToListAsync());
         }
 
-        // GET: Disciplines/Details/5
-        public async Task<IActionResult> Details(short? id)
+        // GET: Directions/Details/5
+        public async Task<IActionResult> Details(byte? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var discipline = await _context.Disciplines
-                .FirstOrDefaultAsync(m => m.discipline_id == id);
-            if (discipline == null)
+            var direction = await _context.Directions
+                .FirstOrDefaultAsync(m => m.direction_id == id);
+            if (direction == null)
             {
                 return NotFound();
             }
 
-            return View(discipline);
+            return View(direction);
         }
 
-        // GET: Disciplines/Create
+        // GET: Directions/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Disciplines/Create
+        // POST: Directions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("discipline_id,discipline_name,number_of_lessons")] Discipline discipline)
+        public async Task<IActionResult> Create([Bind("direction_id,direction_name")] Direction direction)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(discipline);
+                _context.Add(direction);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(discipline);
+            return View(direction);
         }
 
-        // GET: Disciplines/Edit/5
-        public async Task<IActionResult> Edit(short? id)
+        // GET: Directions/Edit/5
+        public async Task<IActionResult> Edit(byte? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var discipline = await _context.Disciplines.FindAsync(id);
-            if (discipline == null)
+            var direction = await _context.Directions.FindAsync(id);
+            if (direction == null)
             {
                 return NotFound();
             }
-            return View(discipline);
+            return View(direction);
         }
 
-        // POST: Disciplines/Edit/5
+        // POST: Directions/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(short id, [Bind("discipline_id,discipline_name,number_of_lessons")] Discipline discipline)
+        public async Task<IActionResult> Edit(byte id, [Bind("direction_id,direction_name")] Direction direction)
         {
-            if (id != discipline.discipline_id)
+            if (id != direction.direction_id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace Academy.Views.Disciplines
             {
                 try
                 {
-                    _context.Update(discipline);
+                    _context.Update(direction);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DisciplineExists(discipline.discipline_id))
+                    if (!DirectionExists(direction.direction_id))
                     {
                         return NotFound();
                     }
@@ -113,45 +113,45 @@ namespace Academy.Views.Disciplines
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(discipline);
+            return View(direction);
         }
 
-        // GET: Disciplines/Delete/5
-        public async Task<IActionResult> Delete(short? id)
+        // GET: Directions/Delete/5
+        public async Task<IActionResult> Delete(byte? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var discipline = await _context.Disciplines
-                .FirstOrDefaultAsync(m => m.discipline_id == id);
-            if (discipline == null)
+            var direction = await _context.Directions
+                .FirstOrDefaultAsync(m => m.direction_id == id);
+            if (direction == null)
             {
                 return NotFound();
             }
 
-            return View(discipline);
+            return View(direction);
         }
 
-        // POST: Disciplines/Delete/5
+        // POST: Directions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(short id)
+        public async Task<IActionResult> DeleteConfirmed(byte id)
         {
-            var discipline = await _context.Disciplines.FindAsync(id);
-            if (discipline != null)
+            var direction = await _context.Directions.FindAsync(id);
+            if (direction != null)
             {
-                _context.Disciplines.Remove(discipline);
+                _context.Directions.Remove(direction);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DisciplineExists(short id)
+        private bool DirectionExists(byte id)
         {
-            return _context.Disciplines.Any(e => e.discipline_id == id);
+            return _context.Directions.Any(e => e.direction_id == id);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Academy.Models;
 
 public class Student
 {
-    [Key]
+    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int stud_id { get; set; }
     [Required]
     public required string last_name { get; set; }

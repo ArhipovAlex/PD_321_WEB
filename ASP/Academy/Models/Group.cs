@@ -5,13 +5,13 @@ namespace Academy.Models;
 
 public class Group
 {
-    [Key]
+    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public required int group_id { get; set; }
     [Required]
     public required string group_name { get; set; }
     [Required]
 
-    [ForeignKey("Direction")]
+    [ForeignKey(nameof(Direction))]
     public required byte direction { get; set; }
     public required Direction Direction { get; set; }
     public ICollection<Student>? Students { get; set; }

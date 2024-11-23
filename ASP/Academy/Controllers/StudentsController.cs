@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Academy.Data;
 using Academy.Models;
 
-namespace Academy.Views.Students
+namespace Academy.Controllers
 {
     public class StudentsController : Controller
     {
