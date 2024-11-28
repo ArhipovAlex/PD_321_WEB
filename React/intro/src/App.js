@@ -2,6 +2,7 @@
 import './App.css';
 import Arcticle from './arcticle/Arcticle';
 import Heazer from './heazer/Heazer';
+import Footer from './footer/Footer';
 
 function App() {
   return (
@@ -10,10 +11,7 @@ function App() {
       <Arcticle/>
       <Arcticle/>
       <Arcticle/>
-      <Arcticle/>
-      <Arcticle/>
-      <Arcticle/>
-      <Arcticle/>
+      <Footer/>
     </div>
   );
 }

@@ -1,10 +1,15 @@
+import './Heazer.css';
 import logo from '../logo.svg';
+
 function Heazer()
 {
+  let title="Hello React";
+  let description = "This is my first React App";
     return(
         <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <h1>Hello React</h1>
+        <h1>{title}</h1>
+        <p>{description}</p>
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
