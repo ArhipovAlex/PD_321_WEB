@@ -27,7 +27,7 @@ function App() {
       <Power a={2} n={8}/>
       <Fact a={0}/>
       <Fib a={7}/>
-      <Arcticle db={db}/>
+      <Arcticle db={data}/>
       <Footer/>
     </div>
   );
