@@ -9,9 +9,9 @@ function Arcticle(props) {
         <div className='app'>
             {
         Object.keys(props.db["people"]).map(item => {
-            let icon = props.db["people"][item].pol == "male" ? male : female;
+            let icon = props.db["people"][item].pol === "male" ? male : female;
             return (
-            <div className="card">
+            <div className="card" key={item}>
                 <img src={props.db["people"][item].photo} alt="" />
                 <div className="name">
                     {props.db["people"][item].name + " " + props.db["people"][item].surname}
